@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bevel Gear Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/UD7CEz6/mechanical-engineering-background-animation_7ji0npyo_thumbnail-1080_01.png'); 
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-inline-size: 600px;
+            margin: auto;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        input[type="number"], input[type="text"] {
+            inline-size: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #db260aa2;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-block-start: 10px;
+        }
+        button:hover {
+            background-color: #12f076;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Bevel Gear Calculator</h2>
+        <label for="pinion_teeth">Enter number of teeth of Pinion:</label>
+        <input type="number" id="pinion_teeth" placeholder="Enter number">
+        <label for="gear_teeth">Enter number of teeth of Gear:</label>
+        <input type="number" id="gear_teeth" placeholder="Enter number">
+        <label for="module">Enter module:</label>
+        <input type="number" id="module" placeholder="Enter number">
+        <button onclick="calculate()">Calculate</button>
+        <button onclick="clearInputs()">Clear</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function calculate() {
+            var z1 = parseFloat(document.getElementById("pinion_teeth").value);
+            var z2 = parseFloat(document.getElementById("gear_teeth").value);
+            var m = parseFloat(document.getElementById("module").value);
+    
+            // Check if any input field is empty
+            if (isNaN(z1) || isNaN(z2) || isNaN(m) || z1 <= 0 || z2 <= 0 || m <= 0) {
+                alert("Please enter valid positive numbers in all fields before calculating.");
+                return;
+            }
+    
+            var gear_ratio = z2 / z1;
+            var gear_pitch_circle_diameter = m * z2;
+            var pinion_pitch_circle_diameter = m * z1;
+            var pinion_pitch_angle = Math.atan(gear_ratio);
+            var gear_pitch_angle = Math.PI / 2 - pinion_pitch_angle;
+            var cone_distance = 0.5 * m * Math.sqrt(2 * z1 + 2 * z2);
+            var gear_tip_diameter = m * (z1 + 2 * Math.cos(pinion_pitch_angle));
+            var pinion_tip_diameter = m * (z2 + 2 * Math.cos(gear_pitch_angle));
+            var face_width = 10 * m;
+            var addendum = 1 * m;
+            var addendum_angle = Math.atan(addendum / cone_distance);
+            var dedendum = 1.2 * m;
+            var dedendum_angle = Math.atan(dedendum / cone_distance);
+            var clearance = 0.2 * m;
+            var thickness_of_teeth = 1.5 * m;
+            var working_depth = 2 * m;
+            var tip_angle = (gear_pitch_angle + addendum_angle) * 180 / Math.PI;
+            var root_angle = (gear_pitch_angle - dedendum_angle) * 180 / Math.PI;
+    
+            var resultHTML = "<h3>Calculation Results:</h3>";
+            resultHTML += "<p>Gear Ratio: " + gear_ratio.toFixed(2) + "</p>";
+            resultHTML += "<p>Gear Pitch Circle Diameter: " + gear_pitch_circle_diameter.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Pinion Pitch Circle Diameter: " + pinion_pitch_circle_diameter.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Pinion Pitch Angle: " + (pinion_pitch_angle * 180 / Math.PI).toFixed(2) + "°</p>";
+            resultHTML += "<p>Gear Pitch Angle: " + (gear_pitch_angle * 180 / Math.PI).toFixed(2) + "°</p>";
+            resultHTML += "<p>Cone Distance: " + cone_distance.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Gear Tip Diameter: " + gear_tip_diameter.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Pinion Tip Diameter: " + pinion_tip_diameter.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Face inline-size: " + face_width.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Addendum: " + addendum.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Dedendum: " + dedendum.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Addendum Angle: " + (addendum_angle * 180 / Math.PI).toFixed(2) + "°</p>";
+            resultHTML += "<p>Dedendum Angle: " + (dedendum_angle * 180 / Math.PI).toFixed(2) + "°</p>";
+            resultHTML += "<p>Clearance: " + clearance.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Thickness of Teeth: " + thickness_of_teeth.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Working Depth: " + working_depth.toFixed(2) + " mm</p>";
+            resultHTML += "<p>Tip Angle: " + tip_angle.toFixed(2) + "°</p>";
+            resultHTML += "<p>Root Angle: " + root_angle.toFixed(2) + "°</p>";
+    
+            document.getElementById("result").innerHTML = resultHTML;
+        }
+    
+        function clearInputs() {
+            document.getElementById("pinion_teeth").value = "";
+            document.getElementById("gear_teeth").value = "";
+            document.getElementById("module").value = "";
+            document.getElementById("result").innerHTML = "";
+        }
+    </script>
+    
+</body>
+</html> 
